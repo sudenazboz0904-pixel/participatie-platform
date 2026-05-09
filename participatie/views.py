@@ -48,3 +48,4 @@ def submit(request):
         form = ProposalForm()
 
     return render(request, 'participatie/submit.html', {'form': form})
+
