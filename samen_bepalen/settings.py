@@ -1,9 +1,77 @@
-from django.contrib import admin
-from .models import Proposal
+from pathlib import Path
 
-@admin.register(Proposal)
-class ProposalAdmin(admin.ModelAdmin):
-    list_display = ("title", "votes", "created_at")
-    search_fields = ("title", "description")
-    list_filter = ("created_at",)
-    ordering = ("-created_at",)
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+SECRET_KEY = 'django-insecure-vervang-dit'
+
+DEBUG = True
+
+ALLOWED_HOSTS = []
+
+
+INSTALLED_APPS = [
+    'participatie',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+ROOT_URLCONF = 'samen_bepalen.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+WSGI_APPLICATION = 'samen_bepalen.wsgi.application'
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+
+AUTH_PASSWORD_VALIDATORS = []
+
+
+LANGUAGE_CODE = 'en-us'
+
+TIME_ZONE = 'UTC'
+
+USE_I18N = True
+
+USE_TZ = True
+
+
+STATIC_URL = 'static/'
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
