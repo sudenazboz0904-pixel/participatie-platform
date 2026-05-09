@@ -26,4 +26,3 @@ class Command(BaseCommand):
             self.stdout.write(f"✓ {title}")
 
         self.stdout.write(self.style.SUCCESS(f'\nTotaal: {Proposal.objects.count()} voorstellen!'))
-

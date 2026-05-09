@@ -1,0 +1,79 @@
+{% extends 'participatie/base.html' %}
+
+{% block title %}GBG Live — Samen Bepalen{% endblock %}
+
+{% block content %}
+
+<!-- Hero-banner -->
+<div class="hero-banner">
+    <div class="container text-center">
+        <h1 class="fw-bold mb-2" style="font-size:2.2rem;">
+            <i class="bi bi-broadcast me-2" style="color:#ffffff;"></i>
+            GBG Live
+        </h1>
+        <p class="mb-0" style="font-size:1.1rem; opacity:0.9;">
+            Blijf op de hoogte van de laatste acties van Gemeentebelangen Gouda.
+        </p>
+    </div>
+</div>
+
+<div class="container py-4">
+
+    <!-- Updates Grid -->
+    <div class="row g-4 justify-content-center">
+        
+        <!-- Update 1 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="live-update-card p-4 h-100 shadow-sm border-2">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="badge bg-warning text-dark px-2 py-1" style="font-size: 0.75rem;">In gesprek</span>
+                    <small class="text-muted"><i class="bi bi-calendar3 me-1"></i> 9 mei 2026</small>
+                </div>
+                <h5 class="fw-bold mb-3" style="color:var(--gb-rood);">Gesprek met inwoners over verkeersveiligheid</h5>
+                <p class="text-muted mb-0" style="font-size:0.95rem; line-height:1.6;">
+                    GBG ging in gesprek met bewoners uit Plaswijck over onveilige verkeerssituaties rondom scholen. Signalen uit de wijk worden meegenomen in verdere uitwerking.
+                </p>
+            </div>
+        </div>
+
+        <!-- Update 2 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="live-update-card p-4 h-100 shadow-sm border-2">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="badge bg-danger px-2 py-1" style="font-size: 0.75rem;">In de raad</span>
+                    <small class="text-muted"><i class="bi bi-calendar3 me-1"></i> 8 mei 2026</small>
+                </div>
+                <h5 class="fw-bold mb-3" style="color:var(--gb-rood);">Aandacht voor betaalbaar wonen</h5>
+                <p class="text-muted mb-0" style="font-size:0.95rem; line-height:1.6;">
+                    Tijdens de raadsvergadering heeft GBG opnieuw aandacht gevraagd voor meer betaalbare woningen voor starters en jongeren in Gouda.
+                </p>
+            </div>
+        </div>
+
+        <!-- Update 3 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="live-update-card p-4 h-100 shadow-sm border-2">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="badge bg-success px-2 py-1" style="font-size: 0.75rem;">In behandeling</span>
+                    <small class="text-muted"><i class="bi bi-calendar3 me-1"></i> 7 mei 2026</small>
+                </div>
+                <h5 class="fw-bold mb-3" style="color:var(--gb-rood);">Idee uit de stad in behandeling</h5>
+                <p class="text-muted mb-0" style="font-size:0.95rem; line-height:1.6;">
+                    Een voorstel van inwoners voor meer groen en ontmoetingsplekken in de wijk is opgepakt en wordt verder onderzocht.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Optionele extra informatie -->
+    <div class="mt-5 pt-4 text-center border-top">
+        <p class="text-muted small">
+            <i class="bi bi-info-circle me-1"></i>
+            Deze updates laten zien hoe we samen met inwoners bouwen aan een beter Gouda.
+        </p>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -19,3 +19,15 @@ class Proposal(models.Model):
     class Meta:
         ordering = ['-votes', '-created_at']
 
+
+class LiveUpdate(models.Model):
+    title = models.CharField(max_length=200)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_published = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['-created_at']

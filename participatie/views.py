@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Proposal
+from .models import Proposal, LiveUpdate
 from .forms import ProposalForm
 
 
@@ -8,7 +8,17 @@ def index(request):
     Homepage: toont alle ingediende voorstellen, gesorteerd op meeste stemmen.
     """
     proposals = Proposal.objects.all().order_by('-votes')
-    return render(request, 'participatie/index.html', {'proposals': proposals})
+    return render(request, 'participatie/index.html', {
+        'proposals': proposals,
+    })
+
+
+def gbg_live(request):
+    """
+    Pagina voor GBG Live updates: toont alle gepubliceerde live updates.
+    """
+    live_updates = LiveUpdate.objects.filter(is_published=True).order_by('-created_at')
+    return render(request, 'participatie/gbg_live.html', {'live_updates': live_updates})
 
 
 def vote(request, proposal_slug):

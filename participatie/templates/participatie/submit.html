@@ -74,4 +74,39 @@
     </div>
 </div>
 
+<!-- Privacy Modal -->
+<div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="privacyModalLabel" style="color:var(--gb-rood);">
+                    <i class="bi bi-shield-check me-2"></i>Privacyverklaring
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Door uw voorstel in te dienen, gaat u akkoord met onze privacyverklaring.</p>
+                <ul>
+                    <li>Uw gegevens worden uitsluitend gebruikt om dit platform te beheren.</li>
+                    <li>Persoonlijke informatie wordt niet gedeeld met derden zonder uw toestemming.</li>
+                    <li>Voorstellen zijn publiekelijk zichtbaar voor alle bezoekers.</li>
+                    <li>Gemeentebelangen Gouda behoudt zich het recht voor om voorstellen te modereren.</li>
+                </ul>
+                <p>Klik op "Akkoord" om verder te gaan.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-accent" data-bs-dismiss="modal">Akkoord</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Toon de privacy modal bij het laden van de pagina
+document.addEventListener('DOMContentLoaded', function() {
+    var privacyModal = new bootstrap.Modal(document.getElementById('privacyModal'));
+    privacyModal.show();
+});
+</script>
+
 {% endblock %}
