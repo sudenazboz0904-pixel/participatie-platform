@@ -6,7 +6,7 @@ SECRET_KEY = 'django-insecure-vervang-dit'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['jouwgouda.pythonanywhere.com']
 
 
 INSTALLED_APPS = [
