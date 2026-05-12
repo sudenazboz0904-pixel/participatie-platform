@@ -19,3 +19,22 @@ class Proposal(models.Model):
     class Meta:
         ordering = ['-votes', '-created_at']
 
+
+class LiveUpdate(models.Model):
+    STATUS_CHOICES = [
+        ('gesprek', 'In gesprek'),
+        ('raad', 'In de raad'),
+        ('behandeling', 'In behandeling'),
+    ]
+
+    title = models.CharField(max_length=200)
+    message = models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='gesprek')
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_published = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['-created_at']
