@@ -3,6 +3,31 @@
 {% block title %}Alle voorstellen — Samen Bepalen{% endblock %}
 
 {% block content %}
+<!-- Welkomst Popup (Modal) -->
+<div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="welcomeModalLabel" style="color: var(--gb-rood);">
+                    Welkom op het inwonersplatform van GBG
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Sluiten"></button>
+            </div>
+            <div class="modal-body py-4">
+                <p style="line-height: 1.6; color: #444;">
+                    Via dit platform kunnen inwoners ideeën, signalen en voorstellen delen over hun wijk en de stad. GBG gebruikt deze input om beter te begrijpen wat er leeft onder inwoners en welke onderwerpen belangrijk zijn in Gouda.
+                </p>
+                <p class="mb-0" style="line-height: 1.6; color: #444;">
+                    Ingezonden voorstellen worden eerst bekeken, waar nodig samengevoegd met vergelijkbare signalen en daarna netjes zichtbaar gemaakt op de website. Zo blijft het platform overzichtelijk en professioneel.
+                </p>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-accent px-4" data-bs-dismiss="modal" style="border-radius: 8px;">Begrepen</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- Hero-banner -->
 <div class="hero-banner">
@@ -138,6 +163,13 @@ function leesVoor() {
 function stopVoorlezen() {
     window.speechSynthesis.cancel();
 }
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var welcomeModal = new bootstrap.Modal(document.getElementById("welcomeModal"));
+    welcomeModal.show();
+});
 </script>
 
 {% endblock %}
