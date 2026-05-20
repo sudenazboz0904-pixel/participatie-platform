@@ -146,48 +146,4 @@
 
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    var myModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
-    myModal.show();
-});
-
-function leesVoor() {
-    const tekst = document.body.innerText;
-
-    if (!tekst.trim()) {
-        alert("Er is geen tekst om voor te lezen.");
-        return;
-    }
-
-    window.speechSynthesis.cancel();
-
-    const stem = new SpeechSynthesisUtterance(tekst);
-    stem.lang = "nl-NL";
-    stem.rate = 0.9;
-    stem.volume = 1;
-
-    setTimeout(() => {
-        window.speechSynthesis.speak(stem);
-    }, 100);
-}
-
-function stopVoorlezen() {
-    window.speechSynthesis.cancel();
-}
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const modalElement = document.getElementById("welcomeModal");
-
-    if (modalElement && typeof bootstrap !== "undefined") {
-        const welcomeModal = new bootstrap.Modal(modalElement);
-        welcomeModal.show();
-    } else {
-        console.log("Bootstrap of welcomeModal niet gevonden");
-    }
-});
-</script>
-
 {% endblock %}

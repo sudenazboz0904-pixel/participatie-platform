@@ -160,6 +160,17 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const modalElement = document.getElementById("welcomeModal");
+
+    if (modalElement) {
+        const welcomeModal = new bootstrap.Modal(modalElement);
+        welcomeModal.show();
+    }
+});
+</script>
+
+<script>
 // Initialiseer popovers
 document.addEventListener('DOMContentLoaded', function() {
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
