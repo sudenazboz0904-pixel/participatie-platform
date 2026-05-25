@@ -190,6 +190,99 @@
             border-right: 8px solid transparent;
             border-top: 8px solid white;
         }
+
+        /* ===== Themafilter ===== */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0;
+        }
+
+        .dropdown-menu.filter-panel {
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            padding: 1rem;
+            min-width: 340px;
+            overflow: visible;
+        }
+
+        .dropdown-menu.filter-panel::before {
+            content: '';
+            position: absolute;
+            top: -9px;
+            left: 20px;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 9px solid #e5e5e5;
+        }
+
+        .dropdown-menu.filter-panel::after {
+            content: '';
+            position: absolute;
+            top: -7px;
+            left: 20px;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid #ffffff;
+        }
+
+        .filter-divider {
+            width: 1px;
+            background: #e0e0e0;
+            margin: 0.25rem 0.125rem;
+            align-self: stretch;
+        }
+
+        .btn-filter {
+            border: none;
+            color: #999;
+            background: transparent;
+            padding: 0.375rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .btn-filter.active {
+            background-color: rgba(196, 28, 59, 0.1);
+            color: var(--gb-rood);
+        }
+
+        .btn-filter:hover:not(.active) {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: #555;
+        }
+
+        .btn-filter[data-filter="all"] {
+            color: #555;
+            font-weight: 600;
+        }
+
+        .btn-filter[data-filter="all"].active {
+            background-color: rgba(0, 0, 0, 0.07);
+            color: #333;
+        }
+
+        .btn-filter[data-filter="all"]:hover:not(.active) {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: #333;
+        }
+
+        .theme-badge {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background-color: rgba(196, 28, 59, 0.08);
+            color: var(--gb-rood);
+            letter-spacing: 0.01em;
+        }
     </style>
 </head>
 <body>

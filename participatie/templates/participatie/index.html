@@ -34,43 +34,50 @@
 
 <div class="container">
 
-    <!-- 3 vaste voorbeeld-voorstellen uit Gouda -->
     <h2 class="fw-bold mb-4 mt-4" style="color: #c41c3b;">Voorstellen van inwoners</h2>
-    <div class="row g-4 mb-5">
 
-        <div class="col-md-6 col-lg-4">
-            <div class="proposal-card p-4 d-flex flex-column h-100" style="border: 2px solid #c41c3b; border-radius: 10px;">
-                <h5 class="fw-bold mb-2" style="color: #c41c3b;">Veiligere fietsroute langs de Hollandsche IJssel</h5>
-                <p class="text-muted">
-                    Inwoners van Korte Akkeren vragen om betere verlichting en een bredere fietsstrook langs de IJsseldijk,
-                    vooral in de donkere wintermaanden. Veel kinderen fietsen hier naar school.
-                </p>
-                <small class="text-muted mt-auto"><strong>Wijk:</strong> Korte Akkeren</small>
+    <!-- Themafilter -->
+    <div class="dropdown mb-4">
+        <button class="btn btn-accent d-flex align-items-center gap-2"
+                type="button" data-bs-toggle="dropdown"
+                data-bs-auto-close="outside" aria-expanded="false">
+            <i class="bi bi-funnel-fill"></i>Filter op thema
+            <span id="themeFilterBadge"
+                  class="badge rounded-pill bg-white"
+                  style="color: var(--gb-rood); display:none;"></span>
+        </button>
+        <div class="dropdown-menu filter-panel">
+            <div class="filter-bar" id="themeFilterBar">
+                <button class="btn-filter" data-filter="all">
+                    <i class="bi bi-grid-3x3-gap me-1"></i>Alle thema's
+                </button>
+                <span class="filter-divider"></span>
+                <button class="btn-filter" data-filter="veiligheid">
+                    <i class="bi bi-tag-fill me-1"></i>Veiligheid
+                </button>
+                <button class="btn-filter" data-filter="verkeer">
+                    <i class="bi bi-tag-fill me-1"></i>Verkeer &amp; Mobiliteit
+                </button>
+                <button class="btn-filter" data-filter="groen">
+                    <i class="bi bi-tag-fill me-1"></i>Groen &amp; Duurzaamheid
+                </button>
+                <button class="btn-filter" data-filter="wonen">
+                    <i class="bi bi-tag-fill me-1"></i>Wonen
+                </button>
+                <button class="btn-filter" data-filter="onderwijs">
+                    <i class="bi bi-tag-fill me-1"></i>Onderwijs &amp; Jeugd
+                </button>
+                <button class="btn-filter" data-filter="zorg">
+                    <i class="bi bi-tag-fill me-1"></i>Zorg &amp; Welzijn
+                </button>
+                <button class="btn-filter" data-filter="cultuur">
+                    <i class="bi bi-tag-fill me-1"></i>Cultuur &amp; Sport
+                </button>
+                <button class="btn-filter" data-filter="overig">
+                    <i class="bi bi-tag-fill me-1"></i>Overig
+                </button>
             </div>
         </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="proposal-card p-4 d-flex flex-column h-100" style="border: 2px solid #c41c3b; border-radius: 10px;">
-                <h5 class="fw-bold mb-2" style="color: #c41c3b;">Meer speeltoestellen in Park Atlantis</h5>
-                <p class="text-muted">
-                    Ouders uit Goverwelle willen extra speeltoestellen voor kinderen van 6 tot 12 jaar.
-                    De huidige speelplek is vooral gericht op kleuters, terwijl oudere kinderen weinig te doen hebben.
-                </p>
-                <small class="text-muted mt-auto"><strong>Wijk:</strong> Goverwelle</small>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="proposal-card p-4 d-flex flex-column h-100" style="border: 2px solid #c41c3b; border-radius: 10px;">
-                <h5 class="fw-bold mb-2" style="color: #c41c3b;">Buurtmoestuin in Bloemendaal</h5>
-                <p class="text-muted">
-                    Bewoners van Bloemendaal willen een gezamenlijke moestuin op een braakliggend stuk grond aan de rand van de wijk,
-                    waar buren samen groente kunnen verbouwen en elkaar beter leren kennen.
-                </p>
-                <small class="text-muted mt-auto"><strong>Wijk:</strong> Bloemendaal</small>
-            </div>
-        </div>
-
     </div>
 
     <!-- Ingediende voorstellen uit de database -->
@@ -78,8 +85,9 @@
         <h2 class="fw-bold mb-4" style="color: #c41c3b;">Recent ingediend</h2>
         <div class="row g-4">
             {% for voorstel in voorstellen %}
-            <div class="col-md-6 col-lg-4">
+            <div class="col-md-6 col-lg-4" data-theme="{{ voorstel.theme }}">
                 <div class="proposal-card p-4 d-flex flex-column h-100" style="border: 2px solid #c41c3b; border-radius: 10px;">
+                    <span class="theme-badge mb-2"><i class="bi bi-tag-fill me-1"></i>{{ voorstel.get_theme_display }}</span>
                     <h5 class="fw-bold mb-2" style="color: #c41c3b;">{{ voorstel.title }}</h5>
                     <p class="text-muted">{{ voorstel.description }}</p>
                     <div class="mt-auto pt-3">
@@ -117,6 +125,101 @@
             </a>
         </div>
     {% endif %}
+
+    <div id="filterEmptyState" style="display:none;" class="text-center py-5">
+        <p class="text-muted fs-5">Geen voorstellen in deze thema's.</p>
+        <button class="btn-filter active mt-2" data-filter="all" onclick="document.getElementById('themeFilterBar').querySelector('[data-filter=all]').click()">
+            <i class="bi bi-grid me-1"></i>Alle thema's tonen
+        </button>
+    </div>
+
 </div>
+
+<script>
+(function () {
+    var STORAGE_KEY = 'gbg_voorstel_filters';
+    var ALL_THEMES = ['veiligheid', 'verkeer', 'groen', 'wonen', 'onderwijs', 'zorg', 'cultuur', 'overig'];
+
+    function loadActive() {
+        try {
+            var raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) {
+                var parsed = JSON.parse(raw);
+                if (Array.isArray(parsed) && parsed.length > 0 &&
+                        parsed.every(function (t) { return ALL_THEMES.includes(t); })) {
+                    return parsed;
+                }
+            }
+        } catch (e) {}
+        return ALL_THEMES.slice();
+    }
+
+    function saveActive(themes) {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(themes)); } catch (e) {}
+    }
+
+    function applyFilter(activeThemes) {
+        var visibleCount = 0;
+        document.querySelectorAll('[data-theme]').forEach(function (col) {
+            if (activeThemes.includes(col.dataset.theme)) {
+                col.style.display = '';
+                visibleCount++;
+            } else {
+                col.style.display = 'none';
+            }
+        });
+        var emptyState = document.getElementById('filterEmptyState');
+        if (emptyState) {
+            emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+    }
+
+    function syncButtons(activeThemes) {
+        document.querySelectorAll('#themeFilterBar [data-filter]').forEach(function (btn) {
+            var f = btn.dataset.filter;
+            if (f === 'all') {
+                btn.classList.toggle('active', activeThemes.length === ALL_THEMES.length);
+            } else {
+                btn.classList.toggle('active', activeThemes.includes(f));
+            }
+        });
+    }
+
+    function updateBadge(activeThemes) {
+        var badge = document.getElementById('themeFilterBadge');
+        if (!badge) return;
+        if (activeThemes.length === ALL_THEMES.length) {
+            badge.style.display = 'none';
+        } else {
+            badge.textContent = activeThemes.length + ' actief';
+            badge.style.display = '';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var activeThemes = loadActive();
+        syncButtons(activeThemes);
+        updateBadge(activeThemes);
+        applyFilter(activeThemes);
+
+        document.getElementById('themeFilterBar').addEventListener('click', function (e) {
+            var btn = e.target.closest('[data-filter]');
+            if (!btn) return;
+            var filter = btn.dataset.filter;
+            if (filter === 'all') {
+                activeThemes = ALL_THEMES.slice();
+            } else if (activeThemes.includes(filter)) {
+                activeThemes = activeThemes.filter(function (t) { return t !== filter; });
+            } else {
+                activeThemes = activeThemes.concat([filter]);
+            }
+            saveActive(activeThemes);
+            syncButtons(activeThemes);
+            updateBadge(activeThemes);
+            applyFilter(activeThemes);
+        });
+    });
+}());
+</script>
 
 {% endblock %}

@@ -9,7 +9,7 @@ def home(request):
 
 
 def index(request):
-    proposals = Proposal.objects.all().order_by('-votes')[:3]
+    proposals = Proposal.objects.all().order_by('-created_at')
     al_gestemd = request.session.get('gestemd_op', [])
     return render(request, 'participatie/index.html', {
         'voorstellen': proposals,
