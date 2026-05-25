@@ -1,9 +1,22 @@
 from django.db import models
 from django.utils.text import slugify
 
+THEME_CHOICES = [
+    ('veiligheid', 'Veiligheid'),
+    ('verkeer',    'Verkeer & Mobiliteit'),
+    ('groen',      'Groen & Duurzaamheid'),
+    ('wonen',      'Wonen'),
+    ('onderwijs',  'Onderwijs & Jeugd'),
+    ('zorg',       'Zorg & Welzijn'),
+    ('cultuur',    'Cultuur & Sport'),
+    ('overig',     'Overig'),
+]
+
+
 class Proposal(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
+    theme = models.CharField(max_length=50, choices=THEME_CHOICES, default='overig')
     votes = models.IntegerField(default=0)
     votes_for = models.IntegerField(default=0)
     votes_against = models.IntegerField(default=0)

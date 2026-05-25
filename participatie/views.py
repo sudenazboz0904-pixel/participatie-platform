@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Proposal, LiveUpdate
 from .forms import ProposalForm
+from .services.theme_classifier import classify_theme
 
 
 def home(request):
@@ -51,7 +52,9 @@ def submit(request):
     if request.method == 'POST':
         form = ProposalForm(request.POST)
         if form.is_valid():
-            form.save()
+            proposal = form.save(commit=False)
+            proposal.theme = classify_theme(proposal.title, proposal.description)
+            proposal.save()
             return redirect('index')
     else:
         form = ProposalForm()
