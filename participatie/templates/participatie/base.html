@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Samen Bepalen — Gemeentebelangen Gouda{% endblock %}</title>
+    <title>{% block title %}Participatieplatform — Gemeentebelangen Gouda{% endblock %}</title>
 
     <!-- Bootstrap 5 voor nette opmaak zonder veel eigen CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -114,6 +114,82 @@
             padding: 2rem 0;
             margin-top: 4rem;
         }
+
+        /* Rondleiding */
+        .tour-highlight {
+            position: relative !important;
+            z-index: 10001 !important;
+            outline: 3px solid #ffffff !important;
+            outline-offset: 4px;
+            border-radius: 6px;
+        }
+
+        #tourTooltip {
+            position: fixed;
+            z-index: 10002;
+            max-width: 300px;
+            width: calc(100% - 32px);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            padding: 20px;
+        }
+
+        #tourStartBtn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9998;
+            background: #c41c3b;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 11px 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.15s;
+        }
+
+        #tourStartBtn:hover { background: #a01729; }
+
+        @keyframes tourPulse {
+            0%, 100% { box-shadow: 0 4px 16px rgba(0,0,0,0.25); }
+            50% { box-shadow: 0 4px 24px rgba(196,28,59,0.6); }
+        }
+
+        #tourStartBtn.pulsing { animation: tourPulse 1.4s ease-in-out infinite; }
+
+        #tourCallout {
+            position: fixed;
+            bottom: 78px;
+            right: 24px;
+            z-index: 9998;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+            padding: 14px 16px;
+            max-width: 220px;
+            font-size: 0.88rem;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        #tourCallout::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            right: 28px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid white;
+        }
     </style>
 </head>
 <body>
@@ -121,9 +197,9 @@
 <!-- ===== NAVIGATIEBALK ===== -->
 <nav class="navbar navbar-expand-lg">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'index' %}" style="display: flex; align-items: center; gap: 10px;">
+        <a class="navbar-brand" href="{% url 'home' %}" style="display: flex; align-items: center; gap: 10px;">
             <img src="{% static 'images/gbg-logo.svg' %}" alt="GBG Logo" style="height: 50px; width: auto;">
-            <span>Samen Bepalen</span>
+            <span>Participatieplatform</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
             <span class="navbar-toggler-icon"></span>
@@ -131,7 +207,10 @@
         <div class="collapse navbar-collapse" id="navMenu">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'index' %}"><i class="bi bi-house me-1"></i>Alle voorstellen</a>
+                    <a class="nav-link" href="{% url 'home' %}"><i class="bi bi-house me-1"></i>Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}"><i class="bi bi-card-list me-1"></i>Voorstellen</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'gbg_live' %}"><i class="bi bi-broadcast me-1"></i>GBG Live</a>
@@ -152,12 +231,189 @@
 <!-- ===== FOOTER ===== -->
 <footer>
     <div class="container text-center">
-        <p class="mb-1"><strong>Gemeentebelangen Gouda</strong> — Samen Bepalen</p>
+        <p class="mb-1"><strong>Gemeentebelangen Gouda</strong> — Participatieplatform</p>
         <p class="mb-0" style="font-size:0.85rem;">Een platform voor inwoners van Gouda</p>
     </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- ===== RONDLEIDING ===== -->
+<div id="tourOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.65); z-index:10000;"></div>
+
+<div id="tourCallout" style="display:none;">
+    <button onclick="dismissCallout()" style="position:absolute; top:8px; right:10px; background:none; border:none; color:#aaa; font-size:1rem; cursor:pointer; line-height:1; padding:0;">✕</button>
+    <strong style="color:#c41c3b;">Nieuw hier?</strong><br>
+    Start de rondleiding en ontdek hoe het platform werkt.
+    <br><br>
+    <button onclick="dismissCallout(); startTour();" style="background:#c41c3b; color:white; border:none; border-radius:7px; padding:6px 14px; font-size:0.83rem; font-weight:600; cursor:pointer; width:100%;">
+        <i class="bi bi-compass me-1"></i> Start rondleiding
+    </button>
+</div>
+
+<button id="tourStartBtn" onclick="startTour()">
+    <i class="bi bi-compass"></i> Rondleiding
+</button>
+
+<div id="tourTooltip" style="display:none;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+        <h6 id="tourTitle" style="color:#c41c3b; font-weight:700; margin:0;"></h6>
+        <button onclick="endTour()" style="background:none; border:none; color:#aaa; font-size:1.1rem; cursor:pointer; padding:0; margin-left:12px; line-height:1;">✕</button>
+    </div>
+    <p id="tourText" style="color:#444; font-size:0.88rem; line-height:1.6; margin-bottom:14px;"></p>
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span id="tourCounter" style="color:#aaa; font-size:0.8rem;"></span>
+        <div style="display:flex; gap:8px;">
+            <button id="tourPrev" onclick="tourMove(-1)" style="background:#f0f0f0; border:none; padding:6px 14px; border-radius:7px; font-size:0.85rem; cursor:pointer; font-weight:600;">Vorige</button>
+            <button id="tourNext" onclick="tourMove(1)" style="background:#c41c3b; color:white; border:none; padding:6px 14px; border-radius:7px; font-size:0.85rem; cursor:pointer; font-weight:600;">Volgende</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const TOUR_STEPS = [
+    {
+        selector: '.navbar-brand',
+        title: 'Startpagina',
+        text: 'Dit is de homepage van het GBG Participatieplatform. Hier lees je waarvoor het platform bedoeld is en hoe inwoners kunnen meedenken over Gouda.'
+    },
+    {
+        selector: '.nav-link[href*="voorstellen"]',
+        title: 'Voorstellen bekijken',
+        text: 'Hier vind je alle ingediende voorstellen en ideeën van inwoners uit Gouda. Je kunt ook stemmen: eens of oneens.'
+    },
+    {
+        selector: '.nav-link[href*="submit"]',
+        title: 'Voorstel indienen',
+        text: 'Via deze knop kun je zelf een idee of voorstel insturen. GBG bekijkt elke inzending en verwerkt deze op het platform.'
+    },
+    {
+        selector: '.nav-link[href*="gbg-live"]',
+        title: 'GBG Live',
+        text: 'Hier volg je wat GBG doet met signalen en ideeën uit de stad — actuele updates vanuit de gemeenteraad.'
+    }
+];
+
+let tourStep = 0;
+let tourEl = null;
+let tourNavBoosted = false;
+
+document.addEventListener('DOMContentLoaded', function () {
+    if (!sessionStorage.getItem('tourCalloutDismissed')) {
+        setTimeout(() => {
+            document.getElementById('tourCallout').style.display = 'block';
+            document.getElementById('tourStartBtn').classList.add('pulsing');
+        }, 800);
+    }
+});
+
+function dismissCallout() {
+    document.getElementById('tourCallout').style.display = 'none';
+    document.getElementById('tourStartBtn').classList.remove('pulsing');
+    sessionStorage.setItem('tourCalloutDismissed', '1');
+}
+
+function startTour() {
+    dismissCallout();
+    tourStep = 0;
+    document.getElementById('tourStartBtn').style.display = 'none';
+    ensureNavExpanded();
+    setTimeout(() => showTourStep(tourStep), 300);
+}
+
+function ensureNavExpanded() {
+    const menu = document.getElementById('navMenu');
+    if (menu && !menu.classList.contains('show') && window.innerWidth < 992) {
+        document.querySelector('.navbar-toggler').click();
+    }
+}
+
+function showTourStep(index) {
+    clearTourHighlight();
+
+    const step = TOUR_STEPS[index];
+    const el = document.querySelector(step.selector);
+    if (!el) { tourMove(1); return; }
+
+    document.getElementById('tourOverlay').style.display = 'block';
+
+    // Boost navbar z-index so its children appear above the overlay
+    if (el.closest('.navbar')) {
+        document.querySelector('.navbar').style.zIndex = '10001';
+        tourNavBoosted = true;
+    }
+
+    el.classList.add('tour-highlight');
+    tourEl = el;
+
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    document.getElementById('tourTitle').textContent = step.title;
+    document.getElementById('tourText').textContent = step.text;
+    document.getElementById('tourCounter').textContent = (index + 1) + ' / ' + TOUR_STEPS.length;
+    document.getElementById('tourPrev').style.visibility = index === 0 ? 'hidden' : 'visible';
+    document.getElementById('tourNext').textContent = index === TOUR_STEPS.length - 1 ? 'Sluiten' : 'Volgende';
+
+    const tooltip = document.getElementById('tourTooltip');
+    tooltip.style.display = 'block';
+    setTimeout(() => positionTooltip(el), 120);
+}
+
+function positionTooltip(el) {
+    const tooltip = document.getElementById('tourTooltip');
+    const rect = el.getBoundingClientRect();
+    const th = tooltip.offsetHeight;
+    const tw = tooltip.offsetWidth;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    let top = rect.bottom + 12;
+    if (top + th > vh - 12) top = rect.top - th - 12;
+    top = Math.max(12, top);
+
+    let left = rect.left;
+    left = Math.max(12, Math.min(left, vw - tw - 12));
+
+    tooltip.style.top = top + 'px';
+    tooltip.style.left = left + 'px';
+}
+
+function clearTourHighlight() {
+    if (tourEl) {
+        tourEl.classList.remove('tour-highlight');
+        tourEl = null;
+    }
+    if (tourNavBoosted) {
+        document.querySelector('.navbar').style.zIndex = '';
+        tourNavBoosted = false;
+    }
+}
+
+function tourMove(dir) {
+    const next = tourStep + dir;
+    if (next >= TOUR_STEPS.length) { endTour(); return; }
+    if (next < 0) return;
+    tourStep = next;
+    showTourStep(tourStep);
+}
+
+function endTour() {
+    clearTourHighlight();
+    document.getElementById('tourOverlay').style.display = 'none';
+    document.getElementById('tourTooltip').style.display = 'none';
+    document.getElementById('tourStartBtn').style.display = '';
+
+    // Collapse navbar on mobile if we opened it
+    const menu = document.getElementById('navMenu');
+    if (menu && menu.classList.contains('show') && window.innerWidth < 992) {
+        document.querySelector('.navbar-toggler').click();
+    }
+}
+
+window.addEventListener('resize', () => {
+    if (tourEl) positionTooltip(tourEl);
+});
+</script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {

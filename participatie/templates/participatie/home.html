@@ -1,0 +1,77 @@
+{% extends 'participatie/base.html' %}
+
+{% block title %}Gemeentebelangen Gouda — Participatieplatform{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<div class="hero-banner text-center">
+    <div class="container">
+        <h1 class="fw-bold mb-3" style="font-size: 2.4rem;">
+            Gouda is van ons allemaal
+        </h1>
+        <p class="mb-4" style="font-size: 1.15rem; max-width: 620px; margin: 0 auto; opacity: 0.92;">
+            Gemeentebelangen Gouda gelooft in een stad die gemaakt wordt door haar inwoners.
+            Via dit platform kun jij meedenken, ideeën delen en invloed uitoefenen op de toekomst van Gouda.
+            Volg actuele ontwikkelingen via <a href="{% url 'gbg_live' %}" style="color: white; font-weight: 600; text-decoration: underline;">GBG Live</a>.
+        </p>
+        <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+            <a href="{% url 'index' %}" class="btn btn-light fw-bold px-4 py-2" style="color: #c41c3b; border-radius: 8px;">
+                <i class="bi bi-card-list me-2"></i>Bekijk voorstellen
+            </a>
+            <a href="{% url 'submit' %}" class="btn fw-bold px-4 py-2" style="background: transparent; color: white; border: 2px solid white; border-radius: 8px;">
+                <i class="bi bi-plus-circle me-2"></i>Voorstel indienen
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Wie zijn wij -->
+<div class="container mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <h2 class="fw-bold mb-3" style="color: #c41c3b;">Wie is Gemeentebelangen Gouda?</h2>
+            <p class="text-muted" style="font-size: 1.05rem; line-height: 1.8;">
+                Gemeentebelangen Gouda (GBG) is een lokale politieke partij die zich inzet voor de belangen van
+                alle Gouwenaars. Wij staan voor een toegankelijke, leefbare en sociale stad — van het centrum
+                tot de wijken. Wij luisteren naar inwoners, niet naar Den Haag.
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<!-- Hoe werkt het platform -->
+<div style="background: #f8f9fa; padding: 3rem 0; margin-bottom: 0;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <h2 class="fw-bold mb-4 text-center" style="color: #c41c3b;">Hoe werkt Participatieplatform?</h2>
+                <div class="row g-3">
+                    <div class="col-md-4 text-center">
+                        <div style="background: #c41c3b; color: white; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; margin: 0 auto 12px;">1</div>
+                        <h6 class="fw-bold">Dien een voorstel in</h6>
+                        <p class="text-muted small">Beschrijf een idee, signaal of knelpunt in jouw wijk of de stad.</p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div style="background: #c41c3b; color: white; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; margin: 0 auto 12px;">2</div>
+                        <h6 class="fw-bold">Stem mee</h6>
+                        <p class="text-muted small">Laat weten of je het eens of oneens bent met ingediende voorstellen.</p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div style="background: #c41c3b; color: white; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; margin: 0 auto 12px;">3</div>
+                        <h6 class="fw-bold">GBG pakt het op</h6>
+                        <p class="text-muted small">Populaire signalen worden meegenomen naar de gemeenteraad.</p>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <a href="{% url 'index' %}" class="btn btn-accent px-5 py-2">
+                        <i class="bi bi-card-list me-2"></i>Ga naar de voorstellen
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

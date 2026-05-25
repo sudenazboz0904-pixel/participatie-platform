@@ -5,6 +5,8 @@ class Proposal(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     votes = models.IntegerField(default=0)
+    votes_for = models.IntegerField(default=0)
+    votes_against = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(max_length=200, unique=False, blank=True)
 
