@@ -236,14 +236,16 @@
     cols.forEach(function(col) {
         if (view === 'grid') {
             col.classList.remove('col-12'); col.classList.add('col-4');
-            var p = col.querySelector('p.text-muted');
-            p.style.display = '-webkit-box'; p.style.webkitLineClamp = '2';
-            p.style.webkitBoxOrient = 'vertical'; p.style.overflow = 'hidden';
+            col.querySelector('p.text-muted').style.display = 'none';
+            col.querySelector('.mt-auto').style.display = 'none';
+            col.querySelector('h5').style.fontSize = '0.75rem';
+            col.querySelector('.proposal-card').style.padding = '0.5rem';
         } else {
             col.classList.remove('col-4'); col.classList.add('col-12');
-            var p = col.querySelector('p.text-muted');
-            p.style.display = ''; p.style.webkitLineClamp = '';
-            p.style.webkitBoxOrient = ''; p.style.overflow = '';
+            col.querySelector('p.text-muted').style.display = '';
+            col.querySelector('.mt-auto').style.display = '';
+            col.querySelector('h5').style.fontSize = '';
+            col.querySelector('.proposal-card').style.padding = '';
         }
     });
     var btnGrid = document.getElementById('btnGrid');
