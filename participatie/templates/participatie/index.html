@@ -82,8 +82,14 @@
 
     <!-- Ingediende voorstellen uit de database -->
     {% if voorstellen %}
-        <h2 class="fw-bold mb-4" style="color: #c41c3b;">Recent ingediend</h2>
-        <div class="row g-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold mb-0" style="color: #c41c3b;">Recent ingediend</h2>
+            <div id="viewToggle" style="display:none; gap: 6px;">
+                <button id="btnGrid" onclick="setView('grid')" title="Raster" style="background:#c41c3b;color:white;border:none;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:1.1rem;">⊞</button>
+                <button id="btnList" onclick="setView('list')" title="Lijst" style="background:white;color:#c41c3b;border:2px solid #c41c3b;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:1.1rem;">☰</button>
+            </div>
+        </div>
+        <div class="row g-4" id="voorstellenGrid">
             {% for voorstel in voorstellen %}
             <div class="col-12 col-md-6 col-lg-4" data-theme="{{ voorstel.theme }}">
                 <div class="proposal-card p-4 d-flex flex-column h-100" style="border: 2px solid #c41c3b; border-radius: 10px;">
@@ -202,6 +208,11 @@
         updateBadge(activeThemes);
         applyFilter(activeThemes);
 
+        if (window.innerWidth <= 767) {
+            document.getElementById('viewToggle').style.display = 'flex';
+            setView(localStorage.getItem('gbg_voorstel_view') || 'list');
+        }
+
         document.getElementById('themeFilterBar').addEventListener('click', function (e) {
             var btn = e.target.closest('[data-filter]');
             if (!btn) return;
@@ -219,6 +230,32 @@
             applyFilter(activeThemes);
         });
     });
+    window.setView = function(view) {
+    localStorage.setItem('gbg_voorstel_view', view);
+    var cols = document.querySelectorAll('#voorstellenGrid [data-theme]');
+    cols.forEach(function(col) {
+        if (view === 'grid') {
+            col.classList.remove('col-12'); col.classList.add('col-4');
+            var p = col.querySelector('p.text-muted');
+            p.style.display = '-webkit-box'; p.style.webkitLineClamp = '2';
+            p.style.webkitBoxOrient = 'vertical'; p.style.overflow = 'hidden';
+        } else {
+            col.classList.remove('col-4'); col.classList.add('col-12');
+            var p = col.querySelector('p.text-muted');
+            p.style.display = ''; p.style.webkitLineClamp = '';
+            p.style.webkitBoxOrient = ''; p.style.overflow = '';
+        }
+    });
+    var btnGrid = document.getElementById('btnGrid');
+    var btnList = document.getElementById('btnList');
+    if (view === 'grid') {
+        btnGrid.style.background='#c41c3b'; btnGrid.style.color='white';
+        btnList.style.background='white'; btnList.style.color='#c41c3b';
+    } else {
+        btnList.style.background='#c41c3b'; btnList.style.color='white';
+        btnGrid.style.background='white'; btnGrid.style.color='#c41c3b';
+    }
+};
 }());
 </script>
 
